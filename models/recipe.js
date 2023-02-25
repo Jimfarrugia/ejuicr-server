@@ -8,9 +8,11 @@ const recipeSchema = new Schema(
       trim: true,
       required: true,
     },
-    // author: {
-    //   type: Ref to user
-    // }
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     strength: {
       type: Number,
       default: 0,

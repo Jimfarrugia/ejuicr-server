@@ -1,11 +1,12 @@
 const asyncHandler = require("express-async-handler");
 const Recipe = require("../models/recipe");
+const User = require("../models/user");
 
 // @desc      Get recipes
 // @route     GET /api/recipes
 // @access    Private
 const getRecipes = asyncHandler(async (req, res) => {
-  const recipes = await Recipe.find();
+  const recipes = await Recipe.find({ author: req.user.id });
   res.status(200).json(recipes);
 });
 
@@ -13,7 +14,7 @@ const getRecipes = asyncHandler(async (req, res) => {
 // @route     POST /api/recipes
 // @access    Private
 const createRecipe = asyncHandler(async (req, res) => {
-  const recipe = await Recipe.create(req.body);
+  const recipe = await Recipe.create({ ...req.body, author: req.user.id });
   res.status(200).json(recipe);
 });
 
@@ -25,6 +26,17 @@ const updateRecipe = asyncHandler(async (req, res) => {
   if (!recipe) {
     res.status(400);
     throw new Error("Recipe not found.");
+  }
+  const user = await User.findById(req.user.id);
+  // Check for user
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found.");
+  }
+  // Make sure recipe auther matches the user's id
+  if (recipe.author.toString() !== user.id) {
+    res.status(401);
+    throw new Error("User not authorized.");
   }
   const updatedRecipe = await Recipe.findByIdAndUpdate(
     req.params.id,
@@ -43,8 +55,19 @@ const deleteRecipe = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Recipe not found");
   }
+  const user = await User.findById(req.user.id);
+  // Check for user
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found.");
+  }
+  // Make sure recipe auther matches the user's id
+  if (recipe.author.toString() !== user.id) {
+    res.status(401);
+    throw new Error("User not authorized.");
+  }
   const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
-  res.status(200).json(deletedRecipe);
+  res.status(200).json({ id: deletedRecipe.id });
 });
 
 module.exports = {
