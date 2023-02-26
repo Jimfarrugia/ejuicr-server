@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
+const mailer = require("../services/mailer");
 const User = require("../models/user");
 
 // @desc      Register a new user
@@ -63,22 +64,36 @@ const loginUser = asyncHandler(async (req, res) => {
 // @access    Private
 const resetPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  // Check user email
   const user = await User.findOne({ email });
   if (!user) {
     res.status(400);
     throw new Error("Unable to find an account with that email.");
   }
-  const { id } = user;
-  // Generate reset password token
   const token = generateResetPasswordToken(user.id);
-  // TODO - Send the token via email
-
-  res.status(200).json({
-    id,
-    email,
-    token,
-  });
+  // Compose email
+  const link = process.env.CLIENT_URL + "/update-password/" + token;
+  const mailOptions = {
+    from: process.env.EMAIL_ADDRESS,
+    to: email,
+    subject: "Reset Password",
+    text:
+      "Click the link below to set a new password:\n\n" +
+      link +
+      "\n\nThis link will expire in 1 hour." +
+      "\n\nIf you did not request a password reset, please ignore this message." +
+      "\n\nRegards,\nejuicr",
+  };
+  // Send email
+  try {
+    const info = await mailer.sendMail(mailOptions);
+    res.status(200).json({
+      info,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    throw new Error("Failed to send reset password email.");
+  }
 });
 
 // @desc      Get user data
