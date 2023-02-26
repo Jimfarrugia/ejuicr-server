@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
+const base64url = require("base64url");
 const mailer = require("../services/mailer");
 const User = require("../models/user");
 
@@ -69,9 +70,11 @@ const resetPassword = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Unable to find an account with that email.");
   }
+  // Generate token & encode it in a url-safe base64 format
   const token = generateResetPasswordToken(user.id);
+  const encodedToken = base64url.encode(token);
   // Compose email
-  const link = process.env.CLIENT_URL + "/update-password/" + token;
+  const link = process.env.CLIENT_URL + "/update-password/" + encodedToken;
   const mailOptions = {
     from: process.env.EMAIL_ADDRESS,
     to: email,
@@ -102,7 +105,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 const updatePassword = asyncHandler(async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
-  const decodedToken = validateToken(token);
+  const decodedToken = validateToken(base64url.decode(token));
   const { id } = decodedToken;
   const user = await User.findOne({ _id: id });
   if (!user) {
