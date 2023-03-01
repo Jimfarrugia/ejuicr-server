@@ -13,7 +13,19 @@ const userSchema = new Schema(
       type: String,
       min: 6,
       max: 255,
-      required: true,
+    },
+    authProvider: {
+      type: String,
+    },
+    googleId: {
+      type: String,
+      unique: true,
+    },
+    displayName: {
+      type: String,
+    },
+    picture: {
+      type: String,
     },
   },
   {
