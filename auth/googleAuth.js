@@ -49,8 +49,13 @@ module.exports = passport => {
               "";
             await user.save();
           }
-          // Use the user's database document to generate a JWT token
-          const token = jwt.sign({ id: user._id }, JWT_SECRET);
+          const { _id, authProvider, email, displayName, picture } = user;
+          // Generate a JWT token with the users id and profile data
+          const token = jwt.sign(
+            { _id, authProvider, email, displayName, picture },
+            JWT_SECRET
+          );
+          console.log(token);
           done(null, token);
         } catch (err) {
           done(err);
