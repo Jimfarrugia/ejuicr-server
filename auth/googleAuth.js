@@ -40,7 +40,6 @@ module.exports = passport => {
           } else {
             // If the user already exists, update their user document with their latest Google profile information
             user.authProvider = "google";
-            user.email = profile.emails[0].value;
             user.googleId = profile.id;
             user.displayName = profile.displayName;
             user.picture =
@@ -55,7 +54,6 @@ module.exports = passport => {
             { _id, authProvider, email, displayName, picture },
             JWT_SECRET
           );
-          console.log(token);
           done(null, token);
         } catch (err) {
           done(err);
