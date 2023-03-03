@@ -19,7 +19,7 @@ const protect = asyncHandler(async (req, res, next) => {
       // Verify token
       const verifiedToken = jwt.verify(decodedToken, process.env.JWT_SECRET);
       // Get user from the token
-      req.user = await User.findById(verifiedToken.userId).select("-password");
+      req.user = await User.findById(verifiedToken._id);
       next();
     } catch (error) {
       console.log(error);
