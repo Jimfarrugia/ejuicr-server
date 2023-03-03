@@ -131,10 +131,15 @@ const updatePassword = asyncHandler(async (req, res) => {
 // @route     GET /api/user/me
 // @access    Private
 const getUser = asyncHandler(async (req, res) => {
-  const { _id, email } = await User.findById(req.user.id);
+  const { _id, authProvider, email, handle, displayName, picture } =
+    await User.findById(req.user.id);
   res.status(200).json({
-    id: _id,
+    _id,
+    authProvider,
     email,
+    handle,
+    displayName,
+    picture,
   });
 });
 
