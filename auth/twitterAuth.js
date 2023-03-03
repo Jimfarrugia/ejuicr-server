@@ -72,13 +72,9 @@ module.exports = passport => {
             user.picture = imageDataUrl;
             await user.save();
           }
-          const { _id, authProvider, email, handle, displayName, picture } =
-            user;
+          const { _id } = user;
           // Generate a JWT token with the users id and profile data
-          const token = jwt.sign(
-            { _id, authProvider, email, handle, displayName, picture },
-            JWT_SECRET
-          );
+          const token = jwt.sign({ _id }, JWT_SECRET);
           done(null, token);
         } catch (err) {
           done(err);
