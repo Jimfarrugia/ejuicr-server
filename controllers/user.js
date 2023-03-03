@@ -99,7 +99,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc      Get user data
+// @desc      Update the user's password
 // @route     GET /api/user/me
 // @access    Private
 const updatePassword = asyncHandler(async (req, res) => {
