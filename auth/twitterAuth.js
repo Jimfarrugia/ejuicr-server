@@ -36,9 +36,11 @@ module.exports = passport => {
 
           // Convert the user's profile image to a data URL
           // (otherwise firefox will prevent the remote image from loading if content blocking is enabled)
-          const imageResponse = await fetch.default(
-            profile._json.profile_image_url_https
+          const imageRemoteUrl = profile._json.profile_image_url_https.replace(
+            "_normal",
+            "_200x200"
           );
+          const imageResponse = await fetch.default(imageRemoteUrl);
           const imageBuffer = await imageResponse.buffer();
           const imageDataUrl = `data:${imageResponse.headers.get(
             "content-type"
