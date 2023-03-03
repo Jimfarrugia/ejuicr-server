@@ -41,7 +41,8 @@ module.exports = passport => {
             "_200x200"
           );
           const imageResponse = await fetch.default(imageRemoteUrl);
-          const imageBuffer = await imageResponse.buffer();
+          const imageArrayBuffer = await imageResponse.arrayBuffer();
+          const imageBuffer = Buffer.from(imageArrayBuffer);
           const imageDataUrl = `data:${imageResponse.headers.get(
             "content-type"
           )};base64,${imageBuffer.toString("base64")}`;
