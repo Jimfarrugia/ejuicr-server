@@ -30,4 +30,27 @@ router.get("/google/failure", (req, res) => {
   throw new Error("Failed to authenticate with Google.");
 });
 
+// Twitter OAuth authentication route
+router.get("/twitter", passport.authenticate("twitter"));
+
+// Twitter OAuth callback route
+router.get(
+  "/twitter/callback",
+  passport.authenticate("twitter", {
+    failureRedirect: "/auth/twitter/failure",
+    session: false,
+  }),
+  (req, res) => {
+    // redirect the user to the react app with the token in the query parameters
+    const urlSafeToken = base64url.encode(req.user);
+    const redirectURL = `${CLIENT_URL}/?token=${urlSafeToken}`;
+    res.redirect(redirectURL);
+  }
+);
+
+router.get("/twitter/failure", (req, res) => {
+  res.status(500);
+  throw new Error("Failed to authenticate with Twitter.");
+});
+
 module.exports = router;

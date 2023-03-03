@@ -2,6 +2,7 @@ const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
 const morgan = require("morgan");
+const session = require("express-session");
 const passport = require("passport");
 const { errorHandler } = require("./middleware/errorHandler");
 const connectDB = require("./config/db");
@@ -11,8 +12,19 @@ connectDB();
 
 const app = express();
 
+app.use(
+  session({
+    secret: "mySecretKey",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
 app.use(passport.initialize());
+app.use(passport.session());
+
 require("./auth/googleAuth")(passport);
+require("./auth/twitterAuth")(passport);
 
 app.use(morgan("tiny"));
 
