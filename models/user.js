@@ -21,7 +21,14 @@ const userSchema = new Schema(
       type: String,
       unique: true,
     },
+    twitterId: {
+      type: String,
+      unique: true,
+    },
     displayName: {
+      type: String,
+    },
+    handle: {
       type: String,
     },
     picture: {
