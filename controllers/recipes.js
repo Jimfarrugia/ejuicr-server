@@ -14,6 +14,20 @@ const getRecipes = asyncHandler(async (req, res) => {
 // @route     POST /api/recipes
 // @access    Private
 const createRecipe = asyncHandler(async (req, res) => {
+  const title = req.body.name;
+  // throw error if title is empty
+  if (!title) {
+    res.status(400);
+    throw new Error("Recipe title must not be blank.");
+  }
+  // throw error if user has a recipe with the same title
+  const duplicateRecipe = await Recipe.findOne({ name: title });
+  if (duplicateRecipe) {
+    res.status(400);
+    throw new Error(
+      `You already have a recipe named ${title}. Please use a different title.`
+    );
+  }
   const recipe = await Recipe.create({ ...req.body, author: req.user._id });
   res.status(200).json(recipe);
 });
