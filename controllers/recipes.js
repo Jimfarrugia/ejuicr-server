@@ -14,7 +14,7 @@ const getRecipes = asyncHandler(async (req, res) => {
 // @route     POST /api/recipes
 // @access    Private
 const createRecipe = asyncHandler(async (req, res) => {
-  const recipe = await Recipe.create({ ...req.body, author: req.user.id });
+  const recipe = await Recipe.create({ ...req.body, author: req.user._id });
   res.status(200).json(recipe);
 });
 

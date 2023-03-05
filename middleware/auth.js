@@ -15,7 +15,9 @@ const protect = asyncHandler(async (req, res, next) => {
       // Get token from header
       const token = req.headers.authorization.split(" ")[1];
       // Decode token from url-safe base64
-      const decodedToken = base64url.decode(token);
+      const decodedToken = token.includes(".")
+        ? token
+        : base64url.decode(token);
       // Verify token
       const verifiedToken = jwt.verify(decodedToken, process.env.JWT_SECRET);
       // Get user from the token
