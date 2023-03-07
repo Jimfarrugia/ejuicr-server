@@ -2,10 +2,26 @@ const asyncHandler = require("express-async-handler");
 const Recipe = require("../models/recipe");
 const User = require("../models/user");
 
-// @desc      Get recipes
+// @desc      Get a recipe
+// @route     GET /api/recipes/:id
+// @access    Private
+const getRecipe = asyncHandler(async (req, res) => {
+  const recipe = await Recipe.findById(req.params.id);
+  if (!recipe) {
+    res.status(404);
+    throw new Error("Recipe not found.");
+  }
+  if (recipe.author.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error("That recipe does not belong to you.");
+  }
+  res.status(200).json(recipe);
+});
+
+// @desc      Get all recipes
 // @route     GET /api/recipes
 // @access    Private
-const getRecipes = asyncHandler(async (req, res) => {
+const getAllRecipes = asyncHandler(async (req, res) => {
   const recipes = await Recipe.find({ author: req.user.id });
   res.status(200).json(recipes);
 });
@@ -28,7 +44,7 @@ const createRecipe = asyncHandler(async (req, res) => {
       `You already have a recipe named ${title}. Please use a different title.`
     );
   }
-  const recipe = await Recipe.create({ ...req.body, author: req.user._id });
+  const recipe = await Recipe.create({ ...req.body, author: req.user.id });
   res.status(200).json(recipe);
 });
 
@@ -85,7 +101,8 @@ const deleteRecipe = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  getRecipes,
+  getRecipe,
+  getAllRecipes,
   createRecipe,
   updateRecipe,
   deleteRecipe,
