@@ -32,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/recipes", require("./routes/recipes"));
+app.use("/api/settings", require("./routes/settings"));
 app.use("/api/user", require("./routes/user"));
 app.use("/auth", require("./routes/auth"));
 
