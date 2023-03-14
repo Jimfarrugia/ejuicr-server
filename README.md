@@ -52,4 +52,4 @@ The server should now be running at the following address and should restart whe
 localhost:5000
 ```
 
-4. Start the client-side application. See [https://github.com/jimfarrugia/ejuicr.git](ejuicr) and follow the installation instructions there to run the development server locally.
+4. Start the client-side application. See [ejuicr](https://github.com/jimfarrugia/ejuicr.git) and follow the installation instructions there to run the development server locally.
