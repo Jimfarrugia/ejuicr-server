@@ -20,6 +20,7 @@ git clone https://github.com/Jimfarrugia/ejuicr-server.git
 NODE_ENV = development
 PORT = 5000
 MONGO_URI = mongodb+srv://dbUsername:dbPassword@dbClusterName.xxxxxxx.mongodb.net/dbCollectionName?retryWrites=true&w=majority
+SESSION_SECRET = session_secret_string
 JWT_SECRET = jsonwebtoken_secret_string
 GOOGLE_CLIENT_ID = google_app_client_id
 GOOGLE_CLIENT_SECRET = google_app_client_secret
