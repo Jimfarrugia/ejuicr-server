@@ -1,6 +1,7 @@
 const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 const morgan = require("morgan");
 const session = require("express-session");
 const passport = require("passport");
@@ -17,6 +18,14 @@ app.use(
     secret: "mySecretKey",
     resave: false,
     saveUninitialized: false,
+  })
+);
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
