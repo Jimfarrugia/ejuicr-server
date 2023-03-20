@@ -19,11 +19,9 @@ const userSchema = new Schema(
     },
     googleId: {
       type: String,
-      unique: true,
     },
     twitterId: {
       type: String,
-      unique: true,
     },
     displayName: {
       type: String,
