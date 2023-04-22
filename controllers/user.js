@@ -14,14 +14,24 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Email or password is missing.");
   }
-  // Check if user exists
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    res.status(400);
-    throw new Error("User already exists.");
-  }
   // Hash password
   const hashedPassword = await hashPassword(password);
+  // Check if user already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    if (existingUser.password) {
+      res.status(400);
+      throw new Error("User already exists.");
+    } else {
+      // Add a password for the user
+      await User.updateOne({ email }, { password: hashedPassword });
+      return res.status(201).json({
+        _id: existingUser.id,
+        email: existingUser.email,
+        token: generateToken(existingUser._id),
+      });
+    }
+  }
   // Create user
   const user = await User.create({ email, password: hashedPassword });
   if (user) {
@@ -177,6 +187,10 @@ const validateToken = token => {
     }
     return decoded;
   });
+};
+
+const capitalizeFirstLetter = string => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 module.exports = {
