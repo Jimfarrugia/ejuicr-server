@@ -47,6 +47,15 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Unable to find an account with that email.");
   }
+  // Check for non-existent password (OAuth users)
+  if (!user.password) {
+    res.status(400);
+    throw new Error(
+      `Sign in with ${capitalizeFirstLetter(
+        user.authProvider
+      )} instead or sign up using this email to add a password.`
+    );
+  }
   // Check password
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
