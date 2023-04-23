@@ -142,7 +142,36 @@ const updatePassword = asyncHandler(async (req, res) => {
     { new: true }
   );
   res.status(200).json({ updatedUser });
-  });
+});
+
+// @desc      Update the user's password using the current password
+// @route     GET /api/user/change-password
+// @access    Private
+const changePassword = asyncHandler(async (req, res) => {
+  const { password, newPassword } = req.body;
+  const { user } = req;
+  if (!user) {
+    res.status(404);
+    throw new Error("Unable to find user account.");
+  }
+  if (!newPassword || newPassword.length < 6 || newPassword.length > 250) {
+    res.status(400);
+    throw new Error("New password is missing or invalid.");
+  }
+  // Check current password
+  if (await bcrypt.compare(password, user.password)) {
+    // update the password
+    const hashedPassword = await hashPassword(newPassword);
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { password: hashedPassword },
+      { new: true }
+    );
+    res.status(200).json({ updatedUser });
+  } else {
+    res.status(400);
+    throw new Error("Incorrect password.");
+  }
 });
 
 // @desc      Get user data
@@ -199,4 +228,5 @@ module.exports = {
   resetPassword,
   getUser,
   updatePassword,
+  changePassword,
 };
