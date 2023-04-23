@@ -118,8 +118,8 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc      Update the user's password
-// @route     GET /api/user/me
+// @desc      Update the user's password using a reset token
+// @route     GET /api/user/reset-password/:token
 // @access    Private
 const updatePassword = asyncHandler(async (req, res) => {
   const { token } = req.params;
@@ -141,8 +141,7 @@ const updatePassword = asyncHandler(async (req, res) => {
     { password: hashedPassword },
     { new: true }
   );
-  res.status(200).json({
-    updatedUser,
+  res.status(200).json({ updatedUser });
   });
 });
 
