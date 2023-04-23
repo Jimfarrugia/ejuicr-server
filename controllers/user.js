@@ -81,7 +81,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // @desc      Create and send a reset password token
 // @route     POST /api/user/reset-password
-// @access    Private
+// @access    Public
 const resetPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -120,7 +120,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 // @desc      Update the user's password using a reset token
 // @route     GET /api/user/reset-password/:token
-// @access    Private
+// @access    Public
 const updatePassword = asyncHandler(async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
