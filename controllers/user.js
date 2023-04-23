@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const base64url = require("base64url");
 const mailer = require("../services/mailer");
 const User = require("../models/user");
+const Recipe = require("../models/recipe");
 
 // @desc      Register a new user
 // @route     POST /api/user
@@ -191,6 +192,16 @@ const getUser = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc      Delete a user and all of their recipes
+// @route     DELETE /api/user
+// @access    Private
+const deleteUser = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  await Recipe.deleteMany({ author: _id });
+  await User.findByIdAndDelete(_id);
+  res.status(200).send("Account successfully deleted.");
+});
+
 // Hash a password
 const hashPassword = async password => {
   const salt = await bcrypt.genSalt(10);
@@ -229,4 +240,5 @@ module.exports = {
   getUser,
   updatePassword,
   changePassword,
+  deleteUser,
 };
