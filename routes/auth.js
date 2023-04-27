@@ -25,6 +25,7 @@ router.get(
   }
 );
 
+// Google OAuth failure route
 router.get("/google/failure", (req, res) => {
   res.status(500);
   throw new Error("Failed to authenticate with Google.");
@@ -48,6 +49,7 @@ router.get(
   }
 );
 
+// Twitter OAuth failure route
 router.get("/twitter/failure", (req, res) => {
   res.status(500);
   throw new Error("Failed to authenticate with Twitter.");
