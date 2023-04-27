@@ -16,7 +16,7 @@ module.exports = passport => {
       {
         consumerKey: TWITTER_CONSUMER_KEY,
         consumerSecret: TWITTER_CONSUMER_SECRET,
-        callbackURL: "/auth/twitter/callback",
+        callbackURL: `${process.env.SERVER_URL}/auth/twitter/callback`,
         userProfileURL:
           "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
       },
