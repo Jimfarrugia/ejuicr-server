@@ -25,18 +25,6 @@ module.exports = passport => {
           // Load the node-fetch module dynamically using import()
           const fetch = await import("node-fetch");
 
-          // // Make a request to the Twitter API to get the user's email address
-          // const response = await fetch.default(
-          //   "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
-          //   {
-          //     headers: {
-          //       Authorization: `Bearer ${accessToken}`,
-          //     },
-          //   }
-          // );
-          // const { email: twitterEmail } = await response.json();
-          // console.log(twitterEmail);
-
           // Convert the user's profile image to a data URL
           // (otherwise firefox will prevent the remote image from loading if content blocking is enabled)
           const imageRemoteUrl = profile._json.profile_image_url_https.replace(
