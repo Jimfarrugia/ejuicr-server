@@ -179,8 +179,17 @@ const changePassword = asyncHandler(async (req, res) => {
 // @route     GET /api/user/me
 // @access    Private
 const getUser = asyncHandler(async (req, res) => {
-  const { _id, authProvider, email, handle, displayName, picture, password } =
-    req.user;
+  const {
+    _id,
+    authProvider,
+    email,
+    handle,
+    displayName,
+    picture,
+    password,
+    twitterId,
+    googleId,
+  } = req.user;
   res.status(200).json({
     _id,
     authProvider,
@@ -189,6 +198,8 @@ const getUser = asyncHandler(async (req, res) => {
     displayName,
     picture,
     hasPassword: password ? true : false,
+    hasGoogleLinked: googleId ? true : false,
+    hasTwitterLinked: twitterId ? true : false,
   });
 });
 
