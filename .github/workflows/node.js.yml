@@ -22,6 +22,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm i
-    - run: pm2 stop ejuicr-server
+    - run: sudo pm2 stop ejuicr-server
     - run: cp -a /home/jim/projects/ejuicr-server-actions-runner/_work/ejuicr-server/ejuicr-server/* /home/jim/projects/ejuicr-server/
-    - run: pm2 start ejuicr-server
+    - run: sudo pm2 start ejuicr-server
