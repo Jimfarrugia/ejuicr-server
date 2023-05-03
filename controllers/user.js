@@ -217,6 +217,37 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(200).send("Account successfully deleted.");
 });
 
+// @desc      Remove google profile data from a user
+// @route     DELETE /api/user/google
+// @access    Private
+const removeGoogle = asyncHandler(async (req, res) => {
+  const { _id, authProvider } = req.user;
+  const newValues = {
+    googleId: "",
+    googlePicture: "",
+    googleDisplayName: "",
+    authProvider: authProvider === "google" ? "" : authProvider,
+  };
+  await User.findByIdAndUpdate(_id, { ...newValues }, { new: true });
+  res.status(200).send("Google profile data successfully removed.");
+});
+
+// @desc      Remove twitter account data from a user
+// @route     DELETE /api/user/twitter
+// @access    Private
+const removeTwitter = asyncHandler(async (req, res) => {
+  const { _id, authProvider } = req.user;
+  const newValues = {
+    twitterId: "",
+    twitterHandle: "",
+    twitterPicture: "",
+    twitterDisplayName: "",
+    authProvider: authProvider === "twitter" ? "" : authProvider,
+  };
+  await User.findByIdAndUpdate(_id, { ...newValues }, { new: true });
+  res.status(200).send("Twitter profile data successfully removed.");
+});
+
 // Hash a password
 const hashPassword = async password => {
   const salt = await bcrypt.genSalt(10);
@@ -256,4 +287,6 @@ module.exports = {
   updatePassword,
   changePassword,
   deleteUser,
+  removeGoogle,
+  removeTwitter,
 };

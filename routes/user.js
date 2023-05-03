@@ -8,6 +8,8 @@ const {
   resetPassword,
   updatePassword,
   changePassword,
+  removeGoogle,
+  removeTwitter,
 } = require("../controllers/user");
 const { protect } = require("../middleware/auth");
 
@@ -18,5 +20,7 @@ router.post("/reset-password/:token", updatePassword);
 router.post("/change-password", protect, changePassword);
 router.get("/me", protect, getUser);
 router.delete("/", protect, deleteUser);
+router.delete("/google", protect, removeGoogle);
+router.delete("/twitter", protect, removeTwitter);
 
 module.exports = router;
