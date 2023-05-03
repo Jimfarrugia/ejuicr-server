@@ -50,18 +50,18 @@ module.exports = passport => {
               authProvider: "twitter",
               email: twitterEmail,
               twitterId: profile.id,
-              displayName: profile.displayName,
-              handle: profile.username,
-              picture: imageDataUrl,
+              twitterDisplayName: profile.displayName,
+              twitterHandle: profile.username,
+              twitterPicture: imageDataUrl,
             });
             await user.save();
           } else {
             // If the user already exists, update their user document with their latest Twitter profile information
             user.authProvider = "twitter";
             user.twitterId = profile.id;
-            user.displayName = profile.displayName;
-            user.handle = profile.username;
-            user.picture = imageDataUrl;
+            user.twitterDisplayName = profile.displayName;
+            user.twitterHandle = profile.username;
+            user.twitterPicture = imageDataUrl;
             await user.save();
           }
           const { _id } = user;

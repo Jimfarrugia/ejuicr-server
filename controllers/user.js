@@ -142,7 +142,7 @@ const updatePassword = asyncHandler(async (req, res) => {
     { password: hashedPassword },
     { new: true }
   );
-  res.status(200).json({ updatedUser });
+  res.status(200).json(updatedUser);
 });
 
 // @desc      Update the user's password using the current password
@@ -168,7 +168,7 @@ const changePassword = asyncHandler(async (req, res) => {
       { password: hashedPassword },
       { new: true }
     );
-    res.status(200).json({ updatedUser });
+    res.status(200).json(updatedUser);
   } else {
     res.status(400);
     throw new Error("Incorrect password.");
@@ -181,22 +181,26 @@ const changePassword = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   const {
     _id,
-    authProvider,
     email,
-    handle,
-    displayName,
-    picture,
     password,
+    authProvider,
     twitterId,
+    twitterHandle,
+    twitterDisplayName,
+    twitterPicture,
     googleId,
+    googleDisplayName,
+    googlePicture,
   } = req.user;
   res.status(200).json({
     _id,
-    authProvider,
     email,
-    handle,
-    displayName,
-    picture,
+    authProvider,
+    twitterHandle,
+    googleDisplayName,
+    googlePicture,
+    twitterDisplayName,
+    twitterPicture,
     hasPassword: password ? true : false,
     hasGoogleLinked: googleId ? true : false,
     hasTwitterLinked: twitterId ? true : false,

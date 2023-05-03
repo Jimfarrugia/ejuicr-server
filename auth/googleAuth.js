@@ -30,8 +30,8 @@ module.exports = passport => {
               authProvider: "google",
               email: profile.emails[0].value,
               googleId: profile.id,
-              displayName: profile.displayName,
-              picture:
+              googleDisplayName: profile.displayName,
+              googlePicture:
                 (profile._json && profile._json.picture) ||
                 profile.photos[0] ||
                 "",
@@ -41,8 +41,8 @@ module.exports = passport => {
             // If the user already exists, update their user document with their latest Google profile information
             user.authProvider = "google";
             user.googleId = profile.id;
-            user.displayName = profile.displayName;
-            user.picture =
+            user.googleDisplayName = profile.displayName;
+            user.googlePicture =
               (profile._json && profile._json.picture) ||
               profile.photos[0] ||
               "";

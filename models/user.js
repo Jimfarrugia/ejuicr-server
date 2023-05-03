@@ -20,16 +20,22 @@ const userSchema = new Schema(
     googleId: {
       type: String,
     },
+    googlePicture: {
+      type: String,
+    },
+    googleDisplayName: {
+      type: String,
+    },
     twitterId: {
       type: String,
     },
-    displayName: {
+    twitterPicture: {
       type: String,
     },
-    handle: {
+    twitterDisplayName: {
       type: String,
     },
-    picture: {
+    twitterHandle: {
       type: String,
     },
   },
